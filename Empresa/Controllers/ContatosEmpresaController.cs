@@ -3,10 +3,11 @@ using Empresa.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Empresa.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ContatosEmpresaController : ControllerBase
     {
@@ -32,6 +33,7 @@ namespace Empresa.Controllers
             return Ok(contatos);
         }
 
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -40,7 +42,7 @@ namespace Empresa.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteById(int id)
         {
             var contato = await _AppDbcontext.Contatos.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -53,11 +55,17 @@ namespace Empresa.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(ContatosEmpresa contato)
+        public async Task<IActionResult> UpdateById(int id, [FromBody] ContatosEmpresa contato)
         {
-            _AppDbcontext.Contatos.Update(contato);
+            var existingContato = await _AppDbcontext.Contatos.FindAsync(id);
+            if (existingContato == null) return NotFound();
+
+            existingContato.Nome = contato.Nome;
+            existingContato.Morada = contato.Morada;
+            existingContato.Telefone = contato.Telefone;
+
             await _AppDbcontext.SaveChangesAsync();
-            return Ok(contato);
+            return Ok(existingContato);
         }
     }
 }

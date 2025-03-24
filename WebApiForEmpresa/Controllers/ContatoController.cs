@@ -14,21 +14,7 @@ namespace WebApiForEmpresa.Controllers
             _client.BaseAddress = new Uri("https://localhost:7158/api");
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Index()
-        //{
-        //    List<ContatoViewModel> contatos = new List<ContatoViewModel>();
-
-        //    HttpResponseMessage response = _client.GetAsync("ContatosEmpresa/GetAll").Result;
-
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        contatos = JsonConvert.DeserializeObject<List<ContatoViewModel>>(response.Content.ReadAsStringAsync().Result);
-        //    }
-
-        //    return View(contatos);
-        //}
-        [HttpGet]
+        [HttpGet] // Route Contatos that connects to the API "api/ContatosEmpresa/GetAll"
         public async Task<IActionResult> Index()
         {
             List<ContatoViewModel> contatos = new List<ContatoViewModel>();
@@ -49,8 +35,47 @@ namespace WebApiForEmpresa.Controllers
             return View(contatos);
         }
 
-        //[HttpPost]
+        [HttpPost]
+        public async Task<IActionResult> Create(ContatoViewModel contato)
+        {
+            HttpResponseMessage response = await _client.PostAsJsonAsync("api/ContatosEmpresa/AddContato", contato);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Console.WriteLine($"Erro na requisição: {response.StatusCode}");
+                ModelState.AddModelError(string.Empty, "Erro ao criar o contato.");
+                return View(contato);
+            }
+        }
 
+        // Options Views: Create, Delete, Details, Edit
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Delete()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Details()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            return View();
+        }
+        // Options Views: Create, Delete, Details, Edit
 
     }
 }

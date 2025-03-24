@@ -14,14 +14,14 @@ else
 }
 
 
-<h1>Forms</h1>
+<h1>Admin Forms</h1>
 
- <p>
-    <a asp-action="Create">Create New</a>
-</p> 
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
@@ -37,6 +37,9 @@ else
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Id)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>

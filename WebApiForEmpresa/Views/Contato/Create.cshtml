@@ -1,0 +1,26 @@
+﻿@model IEnumerable<WebApiForEmpresa.Models.ContatoViewModel>
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Criar Novo Contato</h1>
+    <h2>
+        <a asp-controller="Contato" asp-action="Index">Contatos</a>
+    </h2>
+
+<form method="post">
+    <div class="form-group" style="margin-top: 10px">
+        <label for="Nome">Nome</label>
+        <input type="text" class="form-control" id="Nome" name="Nome" required />
+    </div>
+    <div class="form-group" style="margin-top: 10px">
+        <label for="Morada">Morada</label>
+        <input type="text" class="form-control" id="Morada" name="Morada" required />
+    </div>
+    <div class="form-group" style="margin-top: 10px">
+        <label for="Telefone">Telefone</label>
+        <input type="text" class="form-control" id="Telefone" name="Telefone" required />
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">Criar Contato</button>
+</form>

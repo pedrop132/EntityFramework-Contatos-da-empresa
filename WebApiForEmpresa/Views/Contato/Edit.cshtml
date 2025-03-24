@@ -1,10 +1,30 @@
-﻿@model IEnumerable<WebApiForEmpresa.Models.ContatoViewModel>
+﻿@model WebApiForEmpresa.Models.ContatoViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h3>Edit</h3>
+<h3>Editar contato</h3>
     <h2>
         <a asp-controller="Contato" asp-action="Index">Contatos</a>
     </h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group" style="margin-top: 10px">
+        <label asp-for="Nome"></label>
+        <input asp-for="Nome" class="form-control" required />
+    </div>
+
+    <div class="form-group" style="margin-top: 10px">
+        <label asp-for="Morada"></label>
+        <input asp-for="Morada" class="form-control" required />
+    </div>
+
+    <div class="form-group" style="margin-top: 10px">
+        <label asp-for="Telefone"></label>
+        <input asp-for="Telefone" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">Salvar alterações</button>
+</form>

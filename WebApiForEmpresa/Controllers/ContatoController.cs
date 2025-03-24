@@ -15,6 +15,7 @@ namespace WebApiForEmpresa.Controllers
         }
 
         [HttpGet] // Route Contatos that connects to the API "api/ContatosEmpresa/GetAll"
+        //[Route("")] set this route to default being the first one
         public async Task<IActionResult> Index()
         {
             List<ContatoViewModel> contatos = new List<ContatoViewModel>();
@@ -35,7 +36,17 @@ namespace WebApiForEmpresa.Controllers
             return View(contatos);
         }
 
+        // Options Views: Create, Delete, Edit
+        //Create
+        [HttpGet]
+        [Route("Create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
         [HttpPost]
+        [Route("Create")]
         public async Task<IActionResult> Create(ContatoViewModel contato)
         {
             HttpResponseMessage response = await _client.PostAsJsonAsync("api/ContatosEmpresa/AddContato", contato);
@@ -51,31 +62,73 @@ namespace WebApiForEmpresa.Controllers
             }
         }
 
-        // Options Views: Create, Delete, Details, Edit
+        // Delete
         [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpGet]
+        [Route("Delete")]
         public IActionResult Delete()
         {
             return View();
         }
 
         [HttpGet]
-        public IActionResult Details()
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"api/ContatosEmpresa/DeleteById/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Console.WriteLine($"Erro na requisição: {response.StatusCode}");
+                return RedirectToAction("Index");
+            }
+        }
+
+        // Edit
+        [HttpGet]
+        [Route("Edit")]
+        public IActionResult Edit()
         {
             return View();
         }
 
         [HttpGet]
-        public IActionResult Edit()
+        [Route("Edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            HttpResponseMessage response = await _client.GetAsync($"api/ContatosEmpresa/GetById/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                var contato = JsonConvert.DeserializeObject<ContatoViewModel>(jsonResponse);
+                return View(contato);
+            }
+            else
+            {
+                Console.WriteLine($"Erro na requisição: {response.StatusCode}");
+                return RedirectToAction("Index");
+            }
         }
-        // Options Views: Create, Delete, Details, Edit
+
+        [HttpPost]
+        [Route("Edit/{id}")]
+        public async Task<IActionResult> Edit(ContatoViewModel contato)
+        {
+            HttpResponseMessage response = await _client.PutAsJsonAsync($"api/ContatosEmpresa/UpdateById/{contato.Id}", contato);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Console.WriteLine($"Erro na requisição: {response.StatusCode}");
+                ModelState.AddModelError(string.Empty, "Erro ao editar o contato.");
+                return View(contato);
+            }
+        }
+        // Options Views: Create, Delete, Edit
 
     }
 }

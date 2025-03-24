@@ -16,6 +16,9 @@ else
 
 <h1>Admin Forms</h1>
 
+<p>
+    <a asp-action="Create">Criar contato</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -38,7 +41,7 @@ else
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
@@ -50,10 +53,9 @@ else
                 @Html.DisplayFor(modelItem => item.Telefone)
             </td>
             <td>
-                @Html.ActionLink("Create", "Create", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @* @Html.ActionLink("Create", "Create", new { /* id=item.PrimaryKey */ }) | *@
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Tem certeza que deseja excluir este contato?');">Delete</a>
             </td>
         </tr>
     }

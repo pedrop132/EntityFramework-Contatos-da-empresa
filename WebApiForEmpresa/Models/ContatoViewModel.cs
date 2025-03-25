@@ -11,7 +11,7 @@ namespace WebApiForEmpresa.Models
         [DisplayName("Nome do contato")]
         public string Nome { get; set; } = string.Empty;
         [Required]
-        [DisplayName("Email")]
+        [DisplayName("Morada")]
         public string Morada { get; set; } = string.Empty;
         [Required]
         [DisplayName("Telefone")]

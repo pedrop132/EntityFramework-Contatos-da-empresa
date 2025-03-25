@@ -20,6 +20,25 @@ namespace Empresa.Controllers
         [HttpPost]
         public async Task<IActionResult> AddContato(ContatosEmpresa contato)
         {
+            //if (contato == null ||
+            //    string.IsNullOrWhiteSpace(contato.Nome) ||
+            //    string.IsNullOrWhiteSpace(contato.Morada) ||
+            //    string.IsNullOrWhiteSpace(contato.Telefone))
+            //{
+            //    return BadRequest(new { message = "Nome, Morada, and Telefone não podem estar vazios" });
+            //}
+
+            //// Check if the contact alr exists
+            //bool exists = await _AppDbcontext.Contatos.AnyAsync(c =>
+            //    c.Nome == contato.Nome &&
+            //    c.Morada == contato.Morada &&
+            //    c.Telefone == contato.Telefone);
+
+            //if (exists)
+            //{
+            //    return BadRequest(new { message = "Nome, Morada, Telefone, ja existem." });
+            //}
+
             _AppDbcontext.Contatos.Add(contato);
             await _AppDbcontext.SaveChangesAsync();
 

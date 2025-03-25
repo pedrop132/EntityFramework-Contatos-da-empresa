@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using WebApiForEmpresa.Models;
 
 namespace WebApiForEmpresa.Controllers
@@ -16,6 +17,7 @@ namespace WebApiForEmpresa.Controllers
 
         [HttpGet] // Route Contatos that connects to the API "api/ContatosEmpresa/GetAll"
         //[Route("")] set this route to default being the first one
+        [Route("/Home/Contatos")]
         public async Task<IActionResult> Index()
         {
             List<ContatoViewModel> contatos = new List<ContatoViewModel>();
@@ -39,16 +41,34 @@ namespace WebApiForEmpresa.Controllers
         // Options Views: Create, Delete, Edit
         //Create
         [HttpGet]
-        [Route("Create")]
+        [Route("/Home/Contatos/Create")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("Create")]
+        [Route("/Home/Contatos/Create")]
         public async Task<IActionResult> Create(ContatoViewModel contato)
         {
+            //if (contato == null || string.IsNullOrWhiteSpace(contato.Nome) || string.IsNullOrWhiteSpace(contato.Morada) || string.IsNullOrWhiteSpace(contato.Telefone))
+            //{
+            //    ModelState.AddModelError(string.Empty, "Todos os campos são obrigatórios e não podem conter apenas espaços em branco.");
+            //    return View(contato);
+            //}
+
+            //HttpResponseMessage response = await _client.PostAsJsonAsync("api/ContatosEmpresa/AddContato", contato);
+
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    return RedirectToAction("Index");
+            //}
+            //else
+            //{
+            //    ModelState.AddModelError(string.Empty, "Erro ao criar o contato.");
+            //    return View(contato);
+            //}
+
             HttpResponseMessage response = await _client.PostAsJsonAsync("api/ContatosEmpresa/AddContato", contato);
             if (response.IsSuccessStatusCode)
             {
@@ -60,18 +80,19 @@ namespace WebApiForEmpresa.Controllers
                 ModelState.AddModelError(string.Empty, "Erro ao criar o contato.");
                 return View(contato);
             }
+
         }
 
         // Delete
         [HttpGet]
-        [Route("Delete")]
+        [Route("/Home/Contatos/Delete")]
         public IActionResult Delete()
         {
             return View();
         }
 
         [HttpGet]
-        [Route("Delete/{id}")]
+        [Route("/Home/Contatos/Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             HttpResponseMessage response = await _client.DeleteAsync($"api/ContatosEmpresa/DeleteById/{id}");
@@ -88,14 +109,14 @@ namespace WebApiForEmpresa.Controllers
 
         // Edit
         [HttpGet]
-        [Route("Edit")]
+        [Route("/Home/Contatos/Edit")]
         public IActionResult Edit()
         {
             return View();
         }
 
         [HttpGet]
-        [Route("Edit/{id}")]
+        [Route("/Home/Contatos/Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             HttpResponseMessage response = await _client.GetAsync($"api/ContatosEmpresa/GetById/{id}");
@@ -113,7 +134,7 @@ namespace WebApiForEmpresa.Controllers
         }
 
         [HttpPost]
-        [Route("Edit/{id}")]
+        [Route("/Home/Contatos/Edit/{id}")]
         public async Task<IActionResult> Edit(ContatoViewModel contato)
         {
             HttpResponseMessage response = await _client.PutAsJsonAsync($"api/ContatosEmpresa/UpdateById/{contato.Id}", contato);
@@ -129,6 +150,5 @@ namespace WebApiForEmpresa.Controllers
             }
         }
         // Options Views: Create, Delete, Edit
-
     }
 }

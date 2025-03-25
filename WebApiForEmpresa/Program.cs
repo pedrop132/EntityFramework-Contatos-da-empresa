@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Adicione serviços ao contêiner
 builder.Services.AddControllersWithViews();
 
+// Comunication with the API || Portuguese comments are made in by default.
 builder.Services.AddHttpClient();
 
 builder.Services.AddHttpClient<ContatoController>(client =>

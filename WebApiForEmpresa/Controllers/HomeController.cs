@@ -31,6 +31,20 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpPost]
+    public IActionResult Login(LoginViewModel login)
+    {
+        return View(login);
+    }
+
+    // Logout action
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Login");
+    }
+
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

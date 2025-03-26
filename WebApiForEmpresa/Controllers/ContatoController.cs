@@ -51,23 +51,6 @@ namespace WebApiForEmpresa.Controllers
         [Route("/Home/Contatos/Create")]
         public async Task<IActionResult> Create(ContatoViewModel contato)
         {
-            //if (contato == null || string.IsNullOrWhiteSpace(contato.Nome) || string.IsNullOrWhiteSpace(contato.Morada) || string.IsNullOrWhiteSpace(contato.Telefone))
-            //{
-            //    ModelState.AddModelError(string.Empty, "Todos os campos são obrigatórios e não podem conter apenas espaços em branco.");
-            //    return View(contato);
-            //}
-
-            //HttpResponseMessage response = await _client.PostAsJsonAsync("api/ContatosEmpresa/AddContato", contato);
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError(string.Empty, "Erro ao criar o contato.");
-            //    return View(contato);
-            //}
 
             HttpResponseMessage response = await _client.PostAsJsonAsync("api/ContatosEmpresa/AddContato", contato);
             if (response.IsSuccessStatusCode)

@@ -10,55 +10,44 @@ using System.Text;
 
 namespace Empresa.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly PrivateDbContext _context;
-        private readonly IConfiguration _configs;
+        private readonly AppDbContext _context;
+        private readonly IConfiguration _Users;
 
-        public AuthController(IConfiguration configs, PrivateDbContext context)
+        public AuthController(IConfiguration Users, AppDbContext context)
         {
-            _configs = configs;
+            _Users = Users;
             _context = context;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> CreateUser(Users user)
         {
-            return(null);
+
+
+            // Simulate some async work
+            await Task.CompletedTask;
+
+            return Ok("User created successfully");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        private string Create(Users user)
         {
-            var users = await _context.Users.ToListAsync();
-            return Ok(users);
-        }
+            string secretKey = _Users["Jwt:Key"];
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        private object GenerateJwtToken(Configs user)
-        {
-            var claims = new[]
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configs["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(
-                issuer: _configs["Jwt:Issuer"],
-                audience: _configs["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(120), //120 minutes of token
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                Subject = new ClaimsIdentity(
+                [
+                    new Claim(JwtRegisteredClaimNames.Sub, user.AccountId.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email.ToString()),
+                ]),
+            }
         }
-    
-    
     }
 }

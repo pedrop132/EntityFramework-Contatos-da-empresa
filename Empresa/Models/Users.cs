@@ -1,6 +1,7 @@
 ﻿using Empresa.Models;
 using Microsoft.EntityFrameworkCore;
 using Empresa.Controllers;
+using Microsoft.AspNetCore.Identity;
 
 namespace Empresa.Models;
 
@@ -17,8 +18,15 @@ public static class UserRepository
     {
         return await users.FirstOrDefaultAsync(u => u.Email == email);
     }
-    public static async Task<Users?> GetByPassword(this DbSet<Users> users, string password)
+    public static async Task<Users?> GetByPassword(this DbSet<Users> users, string password, string storedHash)
     {
-        return await users.FirstOrDefaultAsync(u => u.Password == password);
+        var passwordHasher = new PasswordHasher<Users>();
+        if (passwordHasher.VerifyHashedPassword(null, storedHash, password) == PasswordVerificationResult.Success)
+        {
+            return await users.FirstOrDefaultAsync(u => u.Password == storedHash);
+        }
+
+        throw new Exception("Password incorreta");
+
     }
 }

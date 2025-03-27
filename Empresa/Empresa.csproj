@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>16438371-dda3-4ced-90b5-e153f698c6bc</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,5 +23,7 @@
   <ItemGroup>
     <Folder Include="Views\" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="secrets" /></VisualStudio></ProjectExtensions>
 
 </Project>

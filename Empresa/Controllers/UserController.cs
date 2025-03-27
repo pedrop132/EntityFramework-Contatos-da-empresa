@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Empresa.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -22,6 +22,7 @@ namespace Empresa.Controllers
             configuration = _configuration;
         }
 
+        [HttpGet("token")]
         public string CreateToken(Users user)
         {
             string secretKey = configuration["Jwt:Key"];

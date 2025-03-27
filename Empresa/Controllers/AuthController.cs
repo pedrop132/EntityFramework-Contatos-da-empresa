@@ -24,19 +24,18 @@ namespace Empresa.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] Configs config)
+        public async Task<IActionResult> Login()
         {
-            var user = await _context.Users
-                                      .FirstOrDefaultAsync(u => u.Username == config.Username && 
-                                                                u.Password == config.Password);
-
-            if (user == null) { 
-                return Unauthorized("Invalid username or password"); 
-            }
-
-            var token = GenerateJwtToken(user);
-            return Ok(new { token });
+            return(null);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _context.Users.ToListAsync();
+            return Ok(users);
+        }
+
 
         private object GenerateJwtToken(Configs user)
         {
@@ -59,5 +58,7 @@ namespace Empresa.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+    
+    
     }
 }

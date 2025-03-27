@@ -20,7 +20,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-// jwt authentication
+// jwt authentication | the important part about jw is that user token is stored on client
+// so we don't need to store it on server, meaning we can have 1+ servers
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

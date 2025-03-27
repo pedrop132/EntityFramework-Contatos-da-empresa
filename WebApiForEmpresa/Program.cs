@@ -14,6 +14,17 @@ builder.Services.AddHttpClient<ContatoController>(client =>
     client.BaseAddress = new Uri("https://localhost:44388/api/");
 });
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(120); // Tempo de expiração da sessão
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// suporte a controllers com views
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
 
 // Configure o pipeline de requisição HTTP

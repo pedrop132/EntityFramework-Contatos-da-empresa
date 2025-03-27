@@ -3,11 +3,11 @@ using Empresa.Models;
 
 namespace Empresa.Controllers;
 
-internal sealed class LoginUser(AppDbContext context)
+internal sealed class LoginUser(AppDbContext context, tokenProvider tokenProvider)
 {
     public sealed record Request(string Email, String Password);
 
-    public async Task<Users> Handle(Request request)
+    public async Task<string> Handle(Request request)
     {
         Users? user = await context.Users.GetByEmail(request.Email);
 
@@ -18,6 +18,6 @@ internal sealed class LoginUser(AppDbContext context)
 
         string token = tokenProvider.Create(user);
 
-        return user; // Authentication successful
+        return token; // Authentication successful
     }
 }

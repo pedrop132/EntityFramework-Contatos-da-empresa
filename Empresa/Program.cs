@@ -1,3 +1,4 @@
+using Empresa.Controllers;
 using Empresa.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
+builder.Services.AddSingleton<tokenProvider>();
 // Allow CORS for the MVC client
 builder.Services.AddCors(options =>
 {
